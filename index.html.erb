@@ -20,6 +20,13 @@
         font-size: 16px;
       }
 
+      .heading {
+      }
+
+      .subheading {
+        margin-bottom: 50px;
+      }
+
       .calendar {
         width: 100%;
       }
@@ -128,7 +135,8 @@
     </script>
   </head>
   <body>
-    <h1><%= calendar[1][0][:days].first.year %> Calendar</h1>
+    <h1 class='heading'>Weekend Calendar</h1>
+    <h2 class='subheading'><%= calendar[1][0][:days].first.year %></h2>
 
     <section class='calendar'>
       <%# Header %>
