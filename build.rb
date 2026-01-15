@@ -28,20 +28,19 @@ end
 
 calendar = 12.times.to_a.map { Array.new }
 
-# Initialize calendar with months
-
+# Initialize calendar with months and days
 (start_date..end_date).each do |date|
   # We only care about days that are the start of the week
   next unless date.wday == week_starts_on_idx
 
+  # Build week
+  week = []
+  (date..(date + 6)).to_a.each { |day| week << day }
+
+  # Add week to the relevant month
   # If a week spans across a new month, we want to include this week in the
   # NEW month, so we look at the last day
   month_idx = (date + 6).month - 1
-  week = { days: [], desc: [] }
-
-  (date..(date + 6)).to_a.each do |day|
-    week[:days] << day
-  end
   calendar[month_idx] << week
 end
 

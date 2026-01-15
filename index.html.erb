@@ -154,7 +154,7 @@
     </script>
   </head>
   <body>
-    <% year = calendar[1][0][:days].first.year %>
+    <% year = calendar[1][0].first.year %>
 
     <h1 class='heading'>Weekend Calendar</h1>
     <h2 class='subheading'><%= year %></h2>
@@ -162,7 +162,7 @@
     <section class='calendar'>
       <%# Header %>
       <div class='header'>
-        <% calendar[0][0][:days].each do |day| %>
+        <% calendar[0][0].each do |day| %>
         <div class='day'>
           <%= Date::ABBR_DAYNAMES[day.wday][0].upcase %>
         </div>
@@ -177,13 +177,13 @@
             <% month.each do |week| %>
             <div class='week'>
               <div class='days'>
-                <% week[:days].each do |day| %>
+                <% week.each do |day| %>
                   <div class='day' data-date='<%= day.strftime('%Y-%m-%d') %>' data-weekday='<%= day.wday %>'>
                     <%= day.day %>
                   </div>
                 <% end %>
               </div>
-              <span class='desc'><%= week[:desc].join(', ') %></span>
+              <span class='desc'><%= nil %></span>
             </div>
             <% end %>
           </div>
@@ -192,7 +192,7 @@
 
       <%# Footer - just repeate the header %>
       <div class='header'>
-        <% calendar[0][0][:days].each do |day| %>
+        <% calendar[0][0].each do |day| %>
         <div class='day'>
           <%= Date::ABBR_DAYNAMES[day.wday][0].upcase %>
         </div>
