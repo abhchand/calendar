@@ -108,8 +108,12 @@
         box-sizing: border-box;
       }
 
+      .calendar .day--today {
+        background-color: #FFAA00;
+      }
+
       <%# Color Sat/Sun a different color %>
-      .calendar .day[data-day='0'], .calendar .day[data-day='6'] {
+      .calendar .day[data-weekday='0'], .calendar .day[data-weekday='6'] {
         background-color: #FFFFCC;
       }
 
@@ -120,6 +124,21 @@
 
     <!-- JS -->
     <script>
+      const highlightToday = () => {
+        // Find today
+        let ymd = (new Date).toISOString().split('T')[0];
+        const cell = document.querySelector(`.day[data-date='${ymd}']`)
+
+        if (!cell) {
+          return;
+        }
+
+        // Highlight today
+        cell.classList.add('day--today');
+      }
+
+      // Execute on page load
+      document.addEventListener('DOMContentLoaded', highlightToday);
     </script>
 
     <!-- Google Analytics -->
@@ -135,8 +154,10 @@
     </script>
   </head>
   <body>
+    <% year = calendar[1][0][:days].first.year %>
+
     <h1 class='heading'>Weekend Calendar</h1>
-    <h2 class='subheading'><%= calendar[1][0][:days].first.year %></h2>
+    <h2 class='subheading'><%= year %></h2>
 
     <section class='calendar'>
       <%# Header %>
@@ -157,7 +178,7 @@
             <div class='week'>
               <div class='days'>
                 <% week[:days].each do |day| %>
-                  <div class='day' data-day='<%= day.wday %>'>
+                  <div class='day' data-date='<%= day.strftime('%Y-%m-%d') %>' data-weekday='<%= day.wday %>'>
                     <%= day.day %>
                   </div>
                 <% end %>
