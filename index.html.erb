@@ -15,6 +15,100 @@
 
     <!-- CSS -->
     <style>
+      body {
+        font-family: 'Verdana',sans-serif;
+        font-size: 16px;
+      }
+
+      .calendar {
+        width: 100%;
+      }
+
+      .calendar .header {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        height: 25px;
+        margin-top: 7px;
+        padding-left: 40px;
+        margin-bottom: 7px;
+      }
+
+      .calendar .header .day {
+        font-weight: 700;
+        color: white;
+        background-color: black;
+      }
+
+      .calendar .month {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .calendar .month__label {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        border: 1px solid black;
+        font-size: 20px;
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        letter-spacing: 5px;
+        align-self: stretch;
+        margin-right: 10px;
+      }
+
+      .calendar .month__container {
+      }
+
+      .calendar .week {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+        height: 25px;
+        margin-top: 7px;
+      }
+
+      <%# The first week of the year should have no margin %>
+      .calendar .month:nth-child(2) .week:first-child {
+        margin-top: 0;
+      }
+
+      .calendar .days {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .calendar .day {
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 2px;
+        margin-right: 7px;
+        box-sizing: border-box;
+      }
+
+      <%# Color Sat/Sun a different color %>
+      .calendar .day[data-day='0'], .calendar .day[data-day='6'] {
+        background-color: #FFFFCC;
+      }
+
+      .calendar .desc {
+        margin-left: 10px;
+      }
     </style>
 
     <!-- JS -->
@@ -34,7 +128,47 @@
     </script>
   </head>
   <body>
+    <h1><%= calendar[1][0][:days].first.year %> Calendar</h1>
+
     <section class='calendar'>
+      <%# Header %>
+      <div class='header'>
+        <% calendar[0][0][:days].each do |day| %>
+        <div class='day'>
+          <%= Date::ABBR_DAYNAMES[day.wday][0].upcase %>
+        </div>
+        <% end %>
+      </div>
+
+      <%# Content %>
+      <% calendar.each_with_index do |month, idx| %>
+        <div class='month' data-month='<%= idx+1 %>'>
+          <div class='month__label'><%=  Date::ABBR_MONTHNAMES[idx+1].upcase %></div>
+          <div class='month__container'>
+            <% month.each do |week| %>
+            <div class='week'>
+              <div class='days'>
+                <% week[:days].each do |day| %>
+                  <div class='day' data-day='<%= day.wday %>'>
+                    <%= day.day %>
+                  </div>
+                <% end %>
+              </div>
+              <span class='desc'><%= week[:desc].join(', ') %></span>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <%# Footer - just repeate the header %>
+      <div class='header'>
+        <% calendar[0][0][:days].each do |day| %>
+        <div class='day'>
+          <%= Date::ABBR_DAYNAMES[day.wday][0].upcase %>
+        </div>
+        <% end %>
+      </div>
     </section>
   </body>
 </html>
