@@ -52,4 +52,4 @@ template = File.read('index.html.erb')
 vars = { calendar: calendar }
 
 output = ERB.new(template).result(OpenStruct.new(vars).instance_eval { binding })
-File.open(__dir__ + '/doc/index.html', 'w') { |file| file.write(output) }
+File.open(__dir__ + '/docs/index.html', 'w') { |file| file.write(output) }
