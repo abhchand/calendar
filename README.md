@@ -16,3 +16,5 @@ ruby build.rb
 ```shell
 python3 -m http.server --directory ./doc/ 9000
 ```
+
+Open [http://localhost:9000/](http://localhost:9000/).
