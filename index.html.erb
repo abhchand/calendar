@@ -108,13 +108,16 @@
         box-sizing: border-box;
       }
 
-      .calendar .day--today {
-        background-color: #FFAA00;
+      .calendar .day--weekend {
+        background-color: #FFFFCC;
       }
 
-      <%# Color Sat/Sun a different color %>
-      .calendar .day[data-weekday='0'], .calendar .day[data-weekday='6'] {
-        background-color: #FFFFCC;
+      .calendar .day--event {
+        background-color: #64B5F6;
+      }
+
+      .calendar .day--today {
+        background-color: #FFAA00;
       }
 
       .calendar .desc {
@@ -182,14 +185,24 @@
           <div class='month__container'>
             <% month.each do |week| %>
             <div class='week'>
+              <% descriptions = [] %>
               <div class='days'>
                 <% week.each do |day| %>
-                  <div class='day' data-date='<%= day.strftime('%Y-%m-%d') %>' data-weekday='<%= day.wday %>'>
+                  <% descriptions << event_map[day] %>
+                  <div
+                    class='<%=
+                      [
+                        'day',
+                        ('day--weekend' if [0,6].include?(day.wday)),
+                        ('day--event' if event_map.key?(day))
+                      ].compact.join(' ')
+                    %>'
+                    data-date='<%= day.strftime('%Y-%m-%d') %>'>
                     <%= day.day %>
                   </div>
                 <% end %>
               </div>
-              <span class='desc'><%= nil %></span>
+              <span class='desc'><%= descriptions.flatten.compact.uniq.join(', ') %></span>
             </div>
             <% end %>
           </div>

@@ -7,7 +7,10 @@ require 'erb'
 require 'ostruct'
 require 'pry'
 
+require_relative 'calendar'
+
 week_starts_on = 'Wed'
+ics_file = "rna.ics"
 
 start_date = Date.new(Date.today.year, 1, 1)
 end_date = Date.new(Date.today.year, 12, 31)
@@ -20,6 +23,21 @@ start_date_idx = start_date.wday
 while(true) do
   break if start_date.wday == week_starts_on_idx
   start_date = start_date - 1
+end
+
+#
+# Parse ICS events
+#
+
+parser = ICSParser.new(ics_file)
+events = parser.parse_events
+
+event_map = {}
+events.each do |e|
+  (e.start..e.end).each do |dt|
+    event_map[dt] ||= []
+    event_map[dt] << e.summary
+  end
 end
 
 #
@@ -49,7 +67,7 @@ end
 #
 
 template = File.read('index.html.erb')
-vars = { calendar: calendar }
+vars = { calendar: calendar, event_map: event_map }
 
 output = ERB.new(template).result(OpenStruct.new(vars).instance_eval { binding })
 File.open(__dir__ + '/docs/index.html', 'w') { |file| file.write(output) }
