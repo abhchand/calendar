@@ -126,8 +126,14 @@
     <script>
       const highlightToday = () => {
         // Find today
-        let ymd = (new Date).toISOString().split('T')[0];
-        const cell = document.querySelector(`.day[data-date='${ymd}']`)
+        var today = new Date();
+        var d = String(today.getDate()).padStart(2, '0');
+        var m = String(today.getMonth() + 1).padStart(2, '0');
+        var y = today.getFullYear();
+
+        const cell = document.querySelector(
+          `.day[data-date='${[y, m, d].join('-')}']`
+        )
 
         if (!cell) {
           return;
