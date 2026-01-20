@@ -25,7 +25,9 @@ class ICSParser
         in_event = false
         if current_event[:summary]&.match?(TAG)
           events << Event.new(
-            current_event[:summary].gsub(TAG, '').strip,
+            # Replace tag. Also replace commas which are literally escaped
+            # and end up as "\,"
+            current_event[:summary].gsub(TAG, '').gsub(/\\,/, ',').strip,
             # `parse_datetime` returns `Time` and zone, but we want `Date`
             parse_datetime(current_event[:start]).to_date,
             parse_datetime(current_event[:end]).to_date
