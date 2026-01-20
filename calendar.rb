@@ -4,6 +4,7 @@
 
 class ICSParser
   Event = Struct.new(:summary, :start, :end)
+  TAG = /\[public\]/
 
   def initialize(file_path)
     @file_path = file_path
@@ -22,9 +23,9 @@ class ICSParser
         current_event = {}
       elsif line == "END:VEVENT"
         in_event = false
-        if current_event[:summary]&.include?("[public]")
+        if current_event[:summary]&.match?(TAG)
           events << Event.new(
-            current_event[:summary],
+            current_event[:summary].gsub(TAG, '').strip,
             # `parse_datetime` returns `Time` and zone, but we want `Date`
             parse_datetime(current_event[:start]).to_date,
             parse_datetime(current_event[:end]).to_date
