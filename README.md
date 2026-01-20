@@ -2,6 +2,13 @@
 
 Source for https://abhchand.me/calendar/
 
+### Setup
+
+Download ics calendar file and place in folder
+
+* Must be named `rna.ics`
+* Only events tagged `[public]` will be included
+
 ### Build
 
 ```shell
